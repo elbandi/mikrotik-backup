@@ -299,10 +299,16 @@ func main() {
 	err = cfg.MapTo(&config)
 	CheckErr(err, "parse config")
 
+	if debug {
+		fmt.Printf("Connecting to mikrotik: %s:%d\n", config.Mikrotik.Host, config.Mikrotik.Port)
+	}
 	client, err := connectToHost(config.Mikrotik)
 	CheckErr(err, "connect to mikrotik")
 	defer DeferClose(client, "close ssh client")
 
+	if debug {
+		fmt.Println("Get serial number")
+	}
 	serial, err := getSerialNumber(client)
 	CheckErr(err, "get serial number")
 	if debug {
@@ -316,9 +322,15 @@ func main() {
 	stdout, err := session.StdoutPipe()
 	CheckErr(err, "create session pipe")
 
+	if debug {
+		fmt.Println("Export configuration")
+	}
 	err = session.Run("/export show-sensitive; /user export show-sensitive")
 	CheckErr(err, "run export")
 
+	if debug {
+		fmt.Println("Save to git")
+	}
 	err = writeMikrotikBackup(config.Git, serial, stdout)
 	CheckErr(err, "write backup")
 
