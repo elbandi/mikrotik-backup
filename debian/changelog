@@ -1,3 +1,10 @@
+mikrotik-backup (0.6-1) unstable; urgency=medium
+
+  * Detect serial command from architechture
+  * More debug print
+
+ -- Andras Elso <elso.andras@gmail.com>  Sun, 22 Feb 2026 17:59:56 +0000
+
 mikrotik-backup (0.5-1) unstable; urgency=medium
 
   * Check error first
